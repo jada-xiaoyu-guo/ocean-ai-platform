@@ -62,3 +62,36 @@
 ├─ peddy/                 # 涡旋推理核心
 ├─ predict/               # 水文与流速推理
 └─ warning/               # 风浪预警推理
+
+## 🔌 前后端接口
+
+| 接口 | 功能 | 前端模块 |
+|------|------|---------|
+| `POST /predict` | 涡旋识别 | eddy |
+| `POST /temp_salt/predict` | 水文要素预测 | hydro |
+| `POST /wind_wave/predict` | 风浪识别预警 | windwave |
+| `GET /health` | 后端健康检查 | — |
+
+前端默认后端地址：`http://localhost:8000`，可通过环境变量 `VITE_API_BASE_URL` 调整。
+
+### 风浪预警低内存模式
+
+当设备内存不足时，可启用临时接口模式（跳过模型推理，读取固定月份数据）：
+
+- `WINDWAVE_TEMP_MODE=1`：启用临时接口
+- `WINDWAVE_TEMP_MONTH=202509`：指定读取月份（默认 202509）
+
+临时接口保持原有任务生命周期与输出契约，支持与原接口无缝切换。
+
+## 🚀 本地运行
+
+### 启动后端
+
+```bash
+# 安装 Python 依赖
+pip install fastapi uvicorn python-multipart
+pip install -r peddy/requirements_api.txt
+
+# 启动服务（项目根目录执行）
+python3 -m apis.api
+# 服务地址：http://localhost:8000
