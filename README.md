@@ -1,84 +1,92 @@
 # 海洋环境现象识别与多要素智能分析系统
 
-> 面向海洋环境监测的一站式智能分析平台，第十四届中国大学生软件杯竞赛 **国家级一等奖**，本人担任 **前端负责人**。
+> 面向海洋环境监测的一站式智能分析平台，集成中尺度涡旋识别、水文要素 72 小时预测、风浪异常预警与 DeepSeek AI 智能助手。第十四届中国大学生软件杯竞赛 **国家级一等奖**，本人担任 **前端负责人**。
 
 ## 🎬 功能演示
 
-<!-- 放 AI 助手对话的 GIF，最抓眼球 -->
-
-![AI助手演示](docs/ai-demo.gif)
+![AI助手演示](frontend/docs/ai-demo.gif)
 
 ## 📸 项目截图
 
 | 首页总览 | 涡旋识别地图 | AI 智能助手 |
 |---------|------------|------------|
-| ![截图1](docs/screenshot1.png) | ![截图2](docs/screenshot2.png) | ![截图3](docs/screenshot3.png) |
+| ![截图1](frontend/docs/screenshot1.png) | ![截图2](frontend/docs/screenshot2.png) | ![截图3](frontend/docs/screenshot3.png) |
 
 ## 🛠 技术栈
 
-![Vue3](https://img.shields.io/badge/Vue3-4FC08D?style=flat-square&logo=vue.js&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)
-![Pinia](https://img.shields.io/badge/Pinia-FFD859?style=flat-square&logo=pinia&logoColor=black)
-![ECharts](https://img.shields.io/badge/ECharts-AA344D?style=flat-square&logo=apacheecharts&logoColor=white)
-![Leaflet](https://img.shields.io/badge/Leaflet-199900?style=flat-square&logo=leaflet&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
-![DeepSeek](https://img.shields.io/badge/DeepSeek-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)
+
+
+
+
+
+
+
 
 - **前端架构**：Vue3 + Vite + Pinia（Atlas 三层模块化：app / core / modules / shared）
 - **数据可视化**：ECharts + Canvas
 - **地图开发**：Leaflet
-- **AI 能力**：DeepSeek API（流式输出 / 多轮对话 / 前端 Agent 交互封装）
+- **AI 能力**：DeepSeek API（流式输出 SSE / 多轮对话上下文 / 前端 Agent 交互封装）
 - **后端**：FastAPI 聚合服务（涡旋识别 / 水文预测 / 风浪预警）
 
 ## ✨ 核心功能
 
 ### 三大业务模块
-- **中尺度涡旋识别**：基于海洋遥感数据自动识别涡旋，Leaflet 地图可视化标注
-- **水文要素 72 小时预测**：温度、盐度、流速等多要素时序预测与 ECharts 图表展示
-- **风浪异常预警**：实时监测风浪数据，异常情况自动预警，支持任务异步轮询
+- **中尺度涡旋识别**：基于海洋遥感数据自动识别涡旋，Leaflet 地图可视化标注与动态展示
+- **水文要素 72 小时预测**：温度、盐度、流速等多要素时序预测与 ECharts 图表联动展示
+- **风浪异常预警**：实时监测风浪数据，异常情况自动预警，支持任务异步提交与轮询
 
 ### AI 智能助手 🤖
-- 基于 DeepSeek 大模型搭建海洋领域专属 AI 助手
-- 支持流式输出（SSE）、多轮对话上下文管理
+- 基于 DeepSeek 大模型搭建海洋领域专属 AI 智能助手
+- 支持**流式输出（SSE）**、多轮对话上下文管理
 - 封装通用大模型请求 Hook，支持模型切换与超时重试
 - 完成前端 Agent 交互层的工程化封装
 
 ## ⚡ 性能亮点
 
-针对海量水文数据图表渲染卡顿问题，自主实现**数据分片加载与增量渲染**方案，封装通用格式化工具函数处理张量/数组非标返回数据，将万级数据图表渲染耗时**降低 60%**。
+针对海量水文数据图表渲染卡顿问题，自主实现**数据分片加载与增量渲染**方案，封装通用格式化工具函数处理张量 / 数组非标返回数据，将万级数据图表渲染耗时**降低 60%**。
 
 ## 📂 项目结构
 
 ```text
-├─ frontend/              # Vue3 + Vite 前端（本人负责）
+├─ frontend/              # Vue3 + Vite 前端（本人独立负责）
 │  ├─ src/
 │  │  ├─ app/             # 应用入口层
 │  │  ├─ core/            # 核心基础设施
-│  │  ├─ modules/         # 业务模块（eddy/hydro/windwave/overview）
-│  │  ├─ shared/          # 共享组件与工具
+│  │  ├─ modules/         # 业务模块（eddy / hydro / windwave / overview）
+│  │  ├─ shared/          # 共享组件与工具函数
 │  │  └─ views/
-│  └─ docs/               # 前端架构/操作/组件文档
-├─ apis/                  # FastAPI 聚合服务
-├─ peddy/                 # 涡旋推理核心
-├─ predict/               # 水文与流速推理
-└─ warning/               # 风浪预警推理
-🔌 前后端接口
-表格
-接口	功能	前端模块
-POST /predict	涡旋识别	eddy
-POST /temp_salt/predict	水文要素预测	hydro
-POST /wind_wave/predict	风浪识别预警	windwave
-GET /health	后端健康检查	—
-前端默认后端地址：http://localhost:8000，可通过环境变量 VITE_API_BASE_URL 调整。
-风浪预警低内存模式
+│  └─ docs/               # 前端架构 / 操作 / 组件文档
+├─ apis/                  # FastAPI 聚合服务入口与路由
+├─ peddy/                 # 涡旋推理核心能力
+├─ predict/               # 水文与流速推理资产
+└─ warning/               # 风浪预警推理资产
+```
+
+## 🔌 前后端接口
+
+| 接口 | 功能 | 前端模块 |
+|------|------|---------|
+| `POST /predict` | 涡旋识别 | eddy |
+| `POST /temp_salt/predict` | 水文要素预测 | hydro |
+| `POST /wind_wave/predict` | 风浪识别预警 | windwave |
+| `GET /health` | 后端健康检查 | — |
+
+前端默认后端地址：`http://localhost:8000`，可通过环境变量 `VITE_API_BASE_URL` 调整。
+
+### 风浪预警低内存模式
+
 当设备内存不足时，可启用临时接口模式（跳过模型推理，读取固定月份数据）：
-WINDWAVE_TEMP_MODE=1：启用临时接口
-WINDWAVE_TEMP_MONTH=202509：指定读取月份（默认 202509）
+
+- `WINDWAVE_TEMP_MODE=1`：启用临时接口
+- `WINDWAVE_TEMP_MONTH=202509`：指定读取月份（默认 202509）
+
 临时接口保持原有任务生命周期与输出契约，支持与原接口无缝切换。
-🚀 本地运行
-启动后端
-bash
-运行
+
+## 🚀 本地运行
+
+### 启动后端
+
+```bash
 # 安装 Python 依赖
 pip install fastapi uvicorn python-multipart
 pip install -r peddy/requirements_api.txt
@@ -86,20 +94,36 @@ pip install -r peddy/requirements_api.txt
 # 启动服务（项目根目录执行）
 python3 -m apis.api
 # 服务地址：http://localhost:8000
-启动前端
-bash
-运行
+```
+
+### 启动前端
+
+```bash
 cd frontend
 npm install
 npm run dev
 # 开发地址：http://localhost:5173
-生产构建
-bash
-运行
+```
+
+### 生产构建
+
+```bash
 cd frontend
 npm run build
-⚠️ 注意：AI 助手功能需配置 DeepSeek API Key 才可使用，请勿将密钥提交到公开仓库。
-💾 可执行文件
-Windows x64 桌面端可执行文件：下载 v1.0.0
-🏆 获奖情况
-第十四届中国大学生软件杯竞赛 国家级一等奖（2025.08）
+```
+
+> ⚠️ **注意**：AI 助手功能需配置 DeepSeek API Key 才可使用，请勿将密钥提交到公开仓库。
+
+## 💾 可执行文件
+
+Windows x64 桌面端可执行文件：[下载 v1.0.0](https://github.com/jada-xiaoyu-guo/ocean-ai-platform/releases/tag/v1.0.0)
+
+## 🏆 获奖情况
+
+- 第十七届中国大学生服务外包创新创业大赛 **国家级一等奖**（2026.08）
+
+## 📄 前端文档
+
+- [前端系统架构说明文档](frontend/docs/前端系统架构说明文档.md)
+- [前端使用操作说明文档](frontend/docs/前端使用操作说明文档.md)
+- [前端可视化组件说明文档](frontend/docs/前端可视化组件说明文档.md)
