@@ -1,0 +1,33 @@
+.git
+.vscode
+
+# Python bytecode & caches
+**/__pycache__
+**/.ipynb_checkpoints
+**/*.pyc
+**/*.pyo
+**/*.pyd
+
+# Frontend local artifacts (npm ci 会在镜像内重新安装)
+frontend/node_modules
+frontend/dist
+frontend/dev.log
+frontend/frontend.log
+frontend/docs
+frontend/test.js
+
+# Windows 遗留文件
+**/*:Zone.Identifier
+
+# 日志 & 运行时输出目录（镜像运行时动态生成）
+*.log
+api_output
+warning/output
+predict/output
+
+# 文档 & 部署说明（不需要打入镜像）
+*.md
+新建*.txt
+
+# 根目录多余文件
+package-lock.json

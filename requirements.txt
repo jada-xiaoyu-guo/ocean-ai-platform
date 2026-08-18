@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+python-multipart
+
+numpy
+pandas
+xarray
+netCDF4
+
+torch
+scipy
+matplotlib
+opencv-python
+tqdm
+PyYAML
+scikit-learn
+openai
